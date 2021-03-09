@@ -88,7 +88,7 @@ class ProjectVersionService
         return $versionPath;
     }
 
-    private function updateHTMLContent(ProjectVersion $version, string $html, string $images): void
+    private function updateHTMLContent(ProjectVersion $version, string $html, string $images = null): void
     {
         $html = str_replace('contenteditable="true"', '', $html);
         $html = str_replace(env('APP_URL') . '/', '', $html);
@@ -97,8 +97,10 @@ class ProjectVersionService
             $images = explode(';', $images);
             foreach ($images as $image) {
                 if (!is_null($image) && !empty($image)) {
-                    $content = Storage::disk('public_images')->get($image);
-                    Storage::put($version->storage_url . 'images/' . $image, $content);
+                    if (Storage::disk('public_images')->exists($image)) {
+                        $content = Storage::disk('public_images')->get($image);
+                        Storage::put($version->storage_url . 'images/' . $image, $content);
+                    }
                 }
             }
         }

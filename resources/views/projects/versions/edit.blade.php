@@ -65,7 +65,7 @@
                     </form>
                 </div>
 
-                <iframe id="landing-iframe" src="{{ $version->getHTMLPath() }}" frameborder="0"></iframe>
+                <iframe name="{{ random_int(5, 10) }}" id="landing-iframe" data-src="{{ $version->getHTMLPath() . '?' . random_int(5, 10) }}" src="" frameborder="0"></iframe>
             </main>
         </div>
     </div>
@@ -74,54 +74,62 @@
 @push('scripts')
     <script>
         let currentImage = null;
-        const galleryModal = new bootstrap.Modal(document.getElementById('galleryModal'));
-        const storeBtn = document.querySelector('#store-btn');
-        const storeForm = document.querySelector('#store-form');
-        const updateBtn = document.querySelector('#update-btn');
-        const updateForm = document.querySelector('#update-form');
-        const destroyBtn = document.querySelector('#destroy-btn');
-        const destroyForm = document.querySelector('#destroy-form');
-        const htmlRaws = document.querySelectorAll('.html-raw');
-        const imagesRaws = document.querySelectorAll('.images-raw');
-        const iframe = document.getElementById("landing-iframe");
-        const iframeDoc = iframe.contentWindow.document;
+        let galleryModal = new bootstrap.Modal(document.getElementById('galleryModal'));
+        let storeBtn = document.querySelector('#store-btn');
+        let storeForm = document.querySelector('#store-form');
+        let updateBtn = document.querySelector('#update-btn');
+        let updateForm = document.querySelector('#update-form');
+        let destroyBtn = document.querySelector('#destroy-btn');
+        let destroyForm = document.querySelector('#destroy-form');
+        let htmlRaws = document.querySelectorAll('.html-raw');
+        let imagesRaws = document.querySelectorAll('.images-raw');
+        let iframe = document.getElementById("landing-iframe");
+        let iframeDoc = null;
+
+        iframe.src = iframe.dataset.src;
+        console.log('init complete');
 
         iframe.onload = function() {
+
+            iframeDoc = iframe.contentWindow.document;
+
+            console.log('iframe onload start');
+
             iframeDoc.querySelectorAll('*').forEach((el) => {
                 el.contentEditable = true;
             })
 
             iframeDoc.querySelectorAll('img').forEach((el) => {
                 el.addEventListener('click', (e) => {
-                    currentImage = el
+                    currentImage = el;
                     galleryModal.show();
                 })
             })
         }
 
-        window.onload = function() {
-            storeBtn.addEventListener('click', () => {
-                updateHTMLRaw();
-                storeForm.submit();
-            })
-            updateBtn.addEventListener('click', () => {
-                updateHTMLRaw();
-                updateForm.submit();
-            })
-            destroyBtn.addEventListener('click', () => {
-                if (confirm('Вы действительно хотите удалить версию проекта?')) {
-                    destroyForm.submit();
-                }
-            })
+        storeBtn.addEventListener('click', () => {
+            updateHTMLRaw();
+            updateImagesRaw();
+            storeForm.submit();
+        })
+        updateBtn.addEventListener('click', () => {
+            updateHTMLRaw();
+            updateImagesRaw();
+            updateForm.submit();
+        })
+        destroyBtn.addEventListener('click', () => {
+            if (confirm('Вы действительно хотите удалить версию проекта?')) {
+                destroyForm.submit();
+            }
+        })
 
-            document.querySelectorAll('#galleryModal .modal-body img').forEach((el) => {
-                el.addEventListener('click', (e) => {
-                    currentImage.src = el.src;
-                    updateImagesRaw(el.alt);
-                    galleryModal.hide();
-                })
+        document.querySelectorAll('#galleryModal .modal-body img').forEach((el) => {
+            el.addEventListener('click', (e) => {
+                currentImage.src = el.src;
+                updateImagesRaw();
+                galleryModal.hide();
             })
-        }
+        })
 
         function updateHTMLRaw() {
             htmlRaws.forEach((raw) => {
@@ -129,9 +137,15 @@
             })
         }
 
-        function updateImagesRaw(imageName) {
+        function updateImagesRaw() {
+            let images = '';
+            iframeDoc.querySelectorAll('img').forEach((el) => {
+                const src = el.src.replace(/^.*[\\\/]/, '');
+                images += src + ';';
+            })
+
             imagesRaws.forEach((raw) => {
-                raw.value += imageName + ';';
+                raw.value = images;
             })
         }
     </script>
