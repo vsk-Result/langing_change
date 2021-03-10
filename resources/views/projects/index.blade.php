@@ -17,7 +17,9 @@
                             <p class="card-text">{{ $project->description }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <a href="{{ route('projects.edit', $project) }}" class="btn btn-sm btn-primary">Изменить</a>
-                                <small class="text-muted">{{ $project->updated_at->diffForHumans() }}</small>
+
+{{--                                <small class="text-muted">{{ $project->updated_at->diffForHumans() }}</small>--}}
+                                <a href="{{ route('projects.destroy', $project) }}" class="btn btn-sm btn-danger">Удалить</a>
                             </div>
                         </div>
                     </div>

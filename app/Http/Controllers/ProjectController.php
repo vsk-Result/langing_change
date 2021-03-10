@@ -47,4 +47,14 @@ class ProjectController extends Controller
     {
         return redirect()->route('projects.versions.edit', [$project, $project->actualVersion]);
     }
+
+    public function destroy(Project $project)
+    {
+        foreach ($project->versions as $version) {
+            $this->versionService->destroyVersion($version);
+        }
+        $project->delete();
+
+        return redirect()->route('projects.index');
+    }
 }

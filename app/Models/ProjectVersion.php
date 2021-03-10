@@ -12,7 +12,7 @@ class ProjectVersion extends Model
 
     protected $fillable = ['project_id', 'title', 'storage_url'];
 
-    protected $touches = ['project'];
+//    protected $touches = ['project'];
 
     public function project(): BelongsTo
     {

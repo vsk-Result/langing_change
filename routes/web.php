@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('projects/create', [ProjectController::class, 'create'])->name('projects.create');
     Route::post('projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::get('projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
+    Route::get('projects/{project}/destroy', [ProjectController::class, 'destroy'])->name('projects.destroy');
 
     Route::post('projects/{project}/versions/{version}', [ProjectVersionController::class, 'store'])->name('projects.versions.store');
     Route::get('projects/{project}/versions/{version}/edit', [ProjectVersionController::class, 'edit'])->name('projects.versions.edit');

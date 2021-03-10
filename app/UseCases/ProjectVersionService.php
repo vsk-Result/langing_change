@@ -40,7 +40,7 @@ class ProjectVersionService
     public function destroyVersion(ProjectVersion $version): ProjectVersion
     {
         $project = $version->project;
-        if ($version->id === $project->actualVersion->id) return $version;
+        if (($version->id === $project->actualVersion->id) && $project->versions->count() > 1) return $version;
 
         Storage::deleteDirectory($version->storage_url);
         $version->delete();
