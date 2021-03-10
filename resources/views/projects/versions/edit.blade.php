@@ -144,6 +144,8 @@
                 images += src + ';';
             })
 
+            console.log(images);
+
             imagesRaws.forEach((raw) => {
                 raw.value = images;
             })
