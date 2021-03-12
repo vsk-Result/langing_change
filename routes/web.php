@@ -36,4 +36,5 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('gallery', [GalleryController::class, 'index'])->name('gallery.index');
     Route::post('gallery', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::get('gallery/{image}/destroy', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 });

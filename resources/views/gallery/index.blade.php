@@ -18,7 +18,12 @@
         </div>
 
         <div class="row mt-4">
-            @include('gallery._images', $images)
+            @foreach($images as $image)
+                <div class="col-md-3 mb-4">
+                    <img src="{{ asset('images/' . $image->getFileName()) }}" class="img-thumbnail" alt="{{ $image->getFileName() }}">
+                    <a href="{{ route('gallery.destroy', $image->getFileName()) }}">Удалить</a>
+                </div>
+            @endforeach
         </div>
     </div>
 @endsection

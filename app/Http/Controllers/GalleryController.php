@@ -25,4 +25,10 @@ class GalleryController extends Controller
         $this->service->uploadImages($request->images);
         return redirect()->back();
     }
+
+    public function destroy($image)
+    {
+        $this->service->deleteImage($image);
+        return redirect()->back();
+    }
 }
