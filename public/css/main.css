@@ -48,3 +48,12 @@ iframe {
 #galleryModal .modal-body img {
     cursor: pointer;
 }
+
+.gallery-image {
+    position: relative;
+}
+.gallery-image a {
+    position: absolute;
+    bottom: -22px;
+    left: 0;
+}

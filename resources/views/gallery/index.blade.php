@@ -20,8 +20,10 @@
         <div class="row mt-4">
             @foreach($images as $image)
                 <div class="col-md-3 mb-4">
-                    <img src="{{ asset('images/' . $image->getFileName()) }}" class="img-thumbnail" alt="{{ $image->getFileName() }}">
-                    <a href="{{ route('gallery.destroy', $image->getFileName()) }}">Удалить</a>
+                    <div class="gallery-image">
+                        <img src="{{ asset('images/' . $image->getFileName()) }}" class="img-thumbnail" alt="{{ $image->getFileName() }}">
+                        <a href="{{ route('gallery.destroy', $image->getFileName()) }}">Удалить</a>
+                    </div>
                 </div>
             @endforeach
         </div>
